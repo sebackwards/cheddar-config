@@ -29,6 +29,7 @@ router.patch("/", authenticate, (req, res) => {
   const sanitized = sanitizeIncomingPreferences(incoming);
 
   // Layer the sanitized values on top of the user's existing preferences.
+  // This allows partial updates without overwriting unrelated settings.
   applyLayeredConfig(user.preferences, sanitized);
 
   res.json({ ok: true, preferences: user.preferences });
