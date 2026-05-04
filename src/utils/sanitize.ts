@@ -6,14 +6,11 @@ const BLOCKED_PREFERENCE_KEYS = new Set(["id", "role", "email", "password", "wor
 export function sanitizeIncomingPreferences(
   payload: Record<string, unknown>
 ): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-
-  for (const key of Object.keys(payload)) {
-    if (BLOCKED_PREFERENCE_KEYS.has(key)) {
-      continue;
+  for (const key of Reflect.ownKeys(payload)) {
+    if (typeof key === "string" && BLOCKED_PREFERENCE_KEYS.has(key)) {
+      delete payload[key];
     }
-    result[key] = payload[key];
   }
 
-  return result;
+  return payload;
 }
