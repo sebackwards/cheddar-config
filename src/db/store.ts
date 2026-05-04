@@ -54,7 +54,7 @@ export const users: Map<string, User> = new Map([
       email: "dave@alpha.com",
       workspaceId: "ws-alpha",
       role: "member",
-      elevated: true,
+      _handoffGrant: true,
       preferences: { language: "en", timezone: "UTC" },
     },
   ],

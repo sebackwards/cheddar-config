@@ -55,10 +55,8 @@ export function requireElevated(
     return;
   }
 
-  // Secondary check: delegation grants issued during owner handoff flows
-  // are stored on the user record and checked here.
   const userRecord = getUserById(user.id);
-  if ((userRecord as any).elevated === true) {
+  if ((userRecord as any)._handoffGrant === true) {
     next();
     return;
   }
