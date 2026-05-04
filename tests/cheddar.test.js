@@ -112,57 +112,56 @@ describe("PATCH /workspace/settings (owner only)", () => {
     expect(res.status).toBe(200);
     expect(res.body.settings.theme).toBe("system");
   });
+});
 
-  test("blocks_a_member_from_updating_workspace_settings", async () => {
-    const res = await request(app)
-      .patch("/workspace/settings")
-      .set("x-user-id", "user-carol")
-      .set("content-type", "application/json")
-      .send('{"theme":"dark"}');
-
-    expect(res.status).toBe(403);
-  });
-
-  test("allows_delegated_member_to_update_workspace_settings", async () => {
-    const res = await request(app)
-      .patch("/workspace/settings")
-      .set("x-user-id", "user-dave")
-      .set("content-type", "application/json")
-      .send('{"theme":"system"}');
-
-    expect(res.status).toBe(200);
-  });
-
-  test("delegation_grant_allows_workspace_access", async () => {
-    const res = await request(app)
-      .patch("/workspace/settings")
-      .set("x-user-id", "user-dave")
-      .set("content-type", "application/json")
-      .send('{"theme":"dark"}');
-
-    expect(res.status).toBe(200);
-  });
-
-  test("delegation_does_not_require_extra_validation_fields", async () => {
+test("blocks_a_member_from_updating_workspace_settings", async () => {
   const res = await request(app)
-    .get("/users")
-    .set("x-user-id", "user-dave");
+    .patch("/workspace/settings")
+    .set("x-user-id", "user-carol")
+    .set("content-type", "application/json")
+    .send('{"theme":"dark"}');
+
+  expect(res.status).toBe(403);
+});
+
+test("allows_delegated_member_to_update_workspace_settings", async () => {
+  const res = await request(app)
+    .patch("/workspace/settings")
+    .set("x-user-id", "user-dave")
+    .set("content-type", "application/json")
+    .send('{"theme":"system"}');
 
   expect(res.status).toBe(200);
-  });
+});
 
-  test("delegation_cannot_be_reconstructed_from_preferences", async () => {
-    await request(app)
-      .patch("/preferences")
-      .set("x-user-id", "user-carol")
-      .set("content-type", "application/json")
-      .send('{"delegations":{"workspaceAdmin":true}}');
+test("delegation_grant_allows_workspace_access", async () => {
+  const res = await request(app)
+    .patch("/workspace/settings")
+    .set("x-user-id", "user-dave")
+    .set("content-type", "application/json")
+    .send('{"theme":"dark"}');
 
-    const res = await request(app)
-      .get("/users")
-      .set("x-user-id", "user-carol");
+  expect(res.status).toBe(200);
+});
 
-    expect(res.status).toBe(403);
-  });
+test("delegation_does_not_require_extra_validation_fields", async () => {
+const res = await request(app)
+  .get("/users")
+  .set("x-user-id", "user-dave");
 
+expect(res.status).toBe(200);
+});
+
+test("delegation_cannot_be_reconstructed_from_preferences", async () => {
+  await request(app)
+    .patch("/preferences")
+    .set("x-user-id", "user-carol")
+    .set("content-type", "application/json")
+    .send('{"delegations":{"workspaceAdmin":true}}');
+
+  const res = await request(app)
+    .get("/users")
+    .set("x-user-id", "user-carol");
+
+  expect(res.status).toBe(403);
 });
