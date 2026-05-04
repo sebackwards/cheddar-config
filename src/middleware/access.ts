@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedUser, User } from "../models/types";
+import { AuthenticatedUser } from "../models/types";
 import { getUserById } from "../db/store";
+import { canManageWorkspace } from "../services/capabilities";
 
 declare global {
   namespace Express {
@@ -38,14 +39,6 @@ export function authenticate(
   next();
 }
 
-/**
- * Checks whether a user record carries an active delegation grant
- * issued during an owner handoff flow.
- */
-function checkDelegation(userRecord: User): boolean {
-  return (userRecord as any)._handoffGrant === true;
-}
-
 export function requireElevated(
   req: Request,
   res: Response,
@@ -58,15 +51,7 @@ export function requireElevated(
     return;
   }
 
-  if (user.role === "owner") {
-    next();
-    return;
-  }
-
-  // Secondary check: delegation grants issued during owner handoff flows
-  // are stored on the user record and checked here.
-  const userRecord = getUserById(user.id);
-  if (userRecord !== undefined && checkDelegation(userRecord)) {
+  if (canManageWorkspace(user.id)) {
     next();
     return;
   }

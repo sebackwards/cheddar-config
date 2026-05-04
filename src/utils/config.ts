@@ -15,7 +15,6 @@ export function applyLayeredConfig(
       (typeof targetVal === "object" || typeof targetVal === "function") &&
       !Array.isArray(targetVal)
     ) {
-
       applyLayeredConfig(
         targetVal as Record<string, unknown>,
         sourceVal as Record<string, unknown>
