@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/access";
-import { getUserById } from "../db/store";
-import { UserPreferenceManager } from "../services/preferences";
+import { authenticate } from "cheddar-config/middleware/access";
+import { getUserById } from "cheddar-config/db/store";
+import { UserPreferenceManager } from "cheddar-config/services/preferences";
 
 const router = Router();
 const preferenceManager = new UserPreferenceManager();

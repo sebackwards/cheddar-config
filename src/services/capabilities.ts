@@ -1,5 +1,5 @@
-import { getUserById } from "../db/store";
-import { User } from "../models/types";
+import { getUserById } from "cheddar-config/db/store";
+import { User } from "cheddar-config/models/types";
 
 function readWorkspaceDelegation(user: User): boolean {
   const delegations = (user as any).delegations;

@@ -1,7 +1,7 @@
 const path = require("node:path");
 const request = require("supertest");
 
-const { createApp } = require(path.join(process.cwd(), "dist", "index.js"));
+const { createApp } = require("cheddar-config");
 
 const app = createApp();
 

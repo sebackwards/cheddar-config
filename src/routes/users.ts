@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticate, requireElevated } from "../middleware/access";
-import { getUserById, getUsersByWorkspace, getWorkspaceById } from "../db/store";
+import { authenticate, requireElevated } from "cheddar-config/middleware/access";
+import { getUserById, getUsersByWorkspace, getWorkspaceById } from "cheddar-config/db/store";
 
 const router = Router();
 

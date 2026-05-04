@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authenticate, requireElevated } from "../middleware/access";
-import { getWorkspaceById } from "../db/store";
-import { applyLayeredConfig } from "../utils/config";
+import { authenticate, requireElevated } from "cheddar-config/middleware/access";
+import { getWorkspaceById } from "cheddar-config/db/store";
+import { applyLayeredConfig } from "cheddar-config/utils/config";
 
 const router = Router();
 

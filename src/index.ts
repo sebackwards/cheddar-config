@@ -1,3 +1,4 @@
+import "module-alias/register";
 import express, { Request, Response, NextFunction } from "express";
 import usersRouter from "./routes/users";
 import preferencesRouter from "./routes/preferences";

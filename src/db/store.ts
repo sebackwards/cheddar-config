@@ -1,4 +1,4 @@
-import { User, Workspace } from "../models/types";
+import { User, Workspace } from "cheddar-config/models/types";
 
 export const workspaces: Map<string, Workspace> = new Map([
   [

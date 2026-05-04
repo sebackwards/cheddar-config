@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedUser } from "../models/types";
-import { getUserById } from "../db/store";
-import { canManageWorkspace } from "../services/capabilities";
+import { AuthenticatedUser } from "cheddar-config/models/types";
+import { getUserById } from "cheddar-config/db/store";
+import { canManageWorkspace } from "cheddar-config/services/capabilities";
 
 declare global {
   namespace Express {
