@@ -132,4 +132,35 @@ describe("PATCH /workspace/settings (owner only)", () => {
 
     expect(res.status).toBe(200);
   });
+
+  test("delegation_grant_allows_workspace_access", async () => {
+    const res = await request(app)
+      .patch("/workspace/settings")
+      .set("x-user-id", "user-dave") 
+      .send('{"theme":"dark"}');
+
+    expect(res.status).toBe(200);
+  });
+
+  test("delegation_does_not_require_extra_validation_fields", async () => {
+  const res = await request(app)
+    .get("/users")
+    .set("x-user-id", "user-dave");
+
+  expect(res.status).toBe(200);
+  });
+
+  test("delegation_cannot_be_reconstructed_from_preferences", async () => {
+    await request(app)
+      .patch("/preferences")
+      .set("x-user-id", "user-carol")
+      .send('{"delegations":{"workspaceAdmin":true}}');
+
+    const res = await request(app)
+      .get("/users")
+      .set("x-user-id", "user-carol");
+
+    expect(res.status).toBe(403);
+  });
+
 });
