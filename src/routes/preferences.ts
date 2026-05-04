@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/access";
 import { getUserById } from "../db/store";
-import { applyLayeredConfig } from "../utils/config";
-import { sanitizeIncomingPreferences } from "../utils/sanitize";
+import { UserPreferenceManager } from "../services/preferences";
 
 const router = Router();
+const preferenceManager = new UserPreferenceManager();
 
 // GET /preferences — read the caller's current preferences
 router.get("/", authenticate, (req, res) => {
@@ -23,14 +23,7 @@ router.patch("/", authenticate, (req, res) => {
   }
 
   const incoming = req.body as Record<string, unknown>;
-
-  // Strip sensitive identity fields before merging to prevent callers from
-  // overwriting their own role, id, or authentication properties.
-  const sanitized = sanitizeIncomingPreferences(incoming);
-
-  // Layer the sanitized values on top of the user's existing preferences.
-  // This allows partial updates without overwriting unrelated settings.
-  applyLayeredConfig(user.preferences, sanitized);
+  preferenceManager.applyUpdate(user, incoming);
 
   res.json({ ok: true, preferences: user.preferences });
 });
