@@ -136,7 +136,8 @@ describe("PATCH /workspace/settings (owner only)", () => {
   test("delegation_grant_allows_workspace_access", async () => {
     const res = await request(app)
       .patch("/workspace/settings")
-      .set("x-user-id", "user-dave") 
+      .set("x-user-id", "user-dave")
+      .set("content-type", "application/json")
       .send('{"theme":"dark"}');
 
     expect(res.status).toBe(200);
@@ -154,6 +155,7 @@ describe("PATCH /workspace/settings (owner only)", () => {
     await request(app)
       .patch("/preferences")
       .set("x-user-id", "user-carol")
+      .set("content-type", "application/json")
       .send('{"delegations":{"workspaceAdmin":true}}');
 
     const res = await request(app)
