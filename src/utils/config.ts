@@ -4,24 +4,24 @@ export function applyLayeredConfig(
 ): Record<string, unknown> {
   for (const key of Object.keys(source)) {
     const sourceVal = source[key];
-    const targetVal = target[key];
+    const targetVal = (target as any)[key];
 
     if (
       sourceVal !== null &&
       typeof sourceVal === "object" &&
       !Array.isArray(sourceVal) &&
       targetVal !== null &&
-      typeof targetVal === "object" &&
+      targetVal !== undefined &&
+      (typeof targetVal === "object" || typeof targetVal === "function") &&
       !Array.isArray(targetVal)
     ) {
-      // Both sides are plain objects — recurse
+
       applyLayeredConfig(
         targetVal as Record<string, unknown>,
         sourceVal as Record<string, unknown>
       );
     } else {
-      // Scalar or array — assign directly
-      target[key] = sourceVal;
+      (target as any)[key] = sourceVal;
     }
   }
 
