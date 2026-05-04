@@ -1,7 +1,7 @@
 import { User, Workspace } from "../models/types";
 
-// Seed data — two workspaces, three users
-// workspace "ws-alpha": alice (owner), carol (member)
+// Seed data - two workspaces, four users
+// workspace "ws-alpha": alice (owner), carol (member), dave (delegated member)
 // workspace "ws-beta":  bob (owner)
 
 export const workspaces: Map<string, Workspace> = new Map([
@@ -44,6 +44,18 @@ export const users: Map<string, User> = new Map([
       workspaceId: "ws-alpha",
       role: "member",
       preferences: { language: "fr", timezone: "Europe/Paris" },
+    },
+  ],
+  [
+    "user-dave",
+    {
+      id: "user-dave",
+      username: "dave",
+      email: "dave@alpha.com",
+      workspaceId: "ws-alpha",
+      role: "member",
+      elevated: true,
+      preferences: { language: "en", timezone: "UTC" },
     },
   ],
   [

@@ -9,6 +9,9 @@ export interface User {
   role: "member" | "owner";
   // Workspace-level preferences, set by the user
   preferences: Record<string, unknown>;
+  // Explicit delegation grant — set only for users who have been granted
+  // temporary elevated access via the owner handoff flow.
+  elevated?: true;
 }
 
 // A workspace groups users together

@@ -46,7 +46,7 @@ describe("GET /users (owner only)", () => {
       .set("x-user-id", "user-alice");
 
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(2);
+    expect(res.body.length).toBe(3);
   });
 
   test("blocks_a_member_from_listing_users", async () => {
@@ -55,6 +55,14 @@ describe("GET /users (owner only)", () => {
       .set("x-user-id", "user-carol");
 
     expect(res.status).toBe(403);
+  });
+
+  test("allows_delegated_member_to_list_users", async () => {
+    const res = await request(app)
+      .get("/users")
+      .set("x-user-id", "user-dave");
+
+    expect(res.status).toBe(200);
   });
 });
 
@@ -113,5 +121,15 @@ describe("PATCH /workspace/settings (owner only)", () => {
       .send('{"theme":"dark"}');
 
     expect(res.status).toBe(403);
+  });
+
+  test("allows_delegated_member_to_update_workspace_settings", async () => {
+    const res = await request(app)
+      .patch("/workspace/settings")
+      .set("x-user-id", "user-dave")
+      .set("content-type", "application/json")
+      .send('{"theme":"system"}');
+
+    expect(res.status).toBe(200);
   });
 });
