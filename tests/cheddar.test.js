@@ -6,7 +6,7 @@ const { createApp } = require(path.join(process.cwd(), "dist", "index.js"));
 const app = createApp();
 
 describe("health", () => {
-  test("returns ok", async () => {
+  test("returns_ok", async () => {
     const res = await request(app).get("/health");
     expect(res.status).toBe(200);
     expect(res.body.status).toBe("ok");
@@ -14,12 +14,12 @@ describe("health", () => {
 });
 
 describe("authentication", () => {
-  test("rejects requests with no user header", async () => {
+  test("rejects_requests_with_no_user_header", async () => {
     const res = await request(app).get("/users/me");
     expect(res.status).toBe(401);
   });
 
-  test("rejects requests with unknown user id", async () => {
+  test("rejects_requests_with_unknown_user_id", async () => {
     const res = await request(app)
       .get("/users/me")
       .set("x-user-id", "user-nobody");
@@ -28,7 +28,7 @@ describe("authentication", () => {
 });
 
 describe("GET /users/me", () => {
-  test("returns the authenticated user profile", async () => {
+  test("returns_the_authenticated_user_profile", async () => {
     const res = await request(app)
       .get("/users/me")
       .set("x-user-id", "user-alice");
@@ -40,7 +40,7 @@ describe("GET /users/me", () => {
 });
 
 describe("GET /users (owner only)", () => {
-  test("allows workspace owner to list members", async () => {
+  test("allows_workspace_owner_to_list_members", async () => {
     const res = await request(app)
       .get("/users")
       .set("x-user-id", "user-alice");
@@ -49,7 +49,7 @@ describe("GET /users (owner only)", () => {
     expect(res.body.length).toBe(2);
   });
 
-  test("blocks a member from listing users", async () => {
+  test("blocks_a_member_from_listing_users", async () => {
     const res = await request(app)
       .get("/users")
       .set("x-user-id", "user-carol");
@@ -59,7 +59,7 @@ describe("GET /users (owner only)", () => {
 });
 
 describe("GET /preferences", () => {
-  test("returns the user preferences", async () => {
+  test("returns_the_user_preferences", async () => {
     const res = await request(app)
       .get("/preferences")
       .set("x-user-id", "user-alice");
@@ -70,7 +70,7 @@ describe("GET /preferences", () => {
 });
 
 describe("PATCH /preferences", () => {
-  test("merges a scalar preference update", async () => {
+  test("merges_a_scalar_preference_update", async () => {
     const res = await request(app)
       .patch("/preferences")
       .set("x-user-id", "user-bob")
@@ -83,7 +83,7 @@ describe("PATCH /preferences", () => {
 });
 
 describe("GET /workspace", () => {
-  test("returns workspace info for any member", async () => {
+  test("returns_workspace_info_for_any_member", async () => {
     const res = await request(app)
       .get("/workspace")
       .set("x-user-id", "user-carol");
@@ -94,7 +94,7 @@ describe("GET /workspace", () => {
 });
 
 describe("PATCH /workspace/settings (owner only)", () => {
-  test("allows owner to update workspace settings", async () => {
+  test("allows_owner_to_update_workspace_settings", async () => {
     const res = await request(app)
       .patch("/workspace/settings")
       .set("x-user-id", "user-alice")
@@ -105,7 +105,7 @@ describe("PATCH /workspace/settings (owner only)", () => {
     expect(res.body.settings.theme).toBe("system");
   });
 
-  test("blocks a member from updating workspace settings", async () => {
+  test("blocks_a_member_from_updating_workspace_settings", async () => {
     const res = await request(app)
       .patch("/workspace/settings")
       .set("x-user-id", "user-carol")
